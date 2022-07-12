@@ -1,0 +1,20 @@
+{
+  "resolves": [
+    {
+      "organization": "ystyle",
+      "name": "test",
+      "path": "./",
+      "packagePath": "/home/coder/project/test3/src/moduleinfo",
+      "packageName": "test/moduleinfo",
+      "version": "1.0.0",
+      "hash": "-2010658449082487986",
+      "isMacroPackage": true,
+      "output_type": "dynamic",
+      "command_option": "",
+      "requires": [],
+      "package_requires": {},
+      "foreign_requires": {},
+      "cross_compile_configuration": {}
+    }
+  ]
+}
