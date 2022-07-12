@@ -31,7 +31,7 @@ let name:String = @ModuleName(unknow)
 let description:String = @ModuleDesc(unknow)
 let version:String = @ModuleVer(unknow)
 
-func main () {
+main () {
     println("cjc_version: ${cjc_version}")
     println("organization: ${organization}")
     println("name: ${name}")
