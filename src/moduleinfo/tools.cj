@@ -1,11 +1,10 @@
 macro package moduleinfo
 
-from serialization import serialization.*
+from serialization import serialization.{ Serializable, DataModel, DataModelStruct }
 from std import ast.*
-from std import io.*
+from std import os.{Process}
+from std import fs.{File, OpenOption}
 from encoding import json.*
-from std import os.*
-from std import collection.*
 
 class Module <: Serializable<Module> {
     Module(
@@ -37,16 +36,16 @@ class Module <: Serializable<Module> {
 }
 
 var d:?Module= None
+var cjcver:?String = None
 var loaded = false
 
 func getModule():?Module {
     if (loaded) {
         return d
     }
-    let fs = FileStream(FileInfo("./module.json"))
-    fs.openFile()
-    let text = fs.readAllText()
-    let m = JsonObject.fromStr(text)
+    let fs = File("./module.json", OpenOption.Open(true, false))
+    let text = fs.readToEnd()
+    let m = JsonObject.fromStr(String.fromUtf8(text))
     d = Module.deserialize(DataModel.fromJson(m))
     loaded = true
     return d
