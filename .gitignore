@@ -1,5 +1,23 @@
-.idea
-.vscode
-bin
-build
-unittest
+# Build outputs
+target/
+*.so
+*.cjo
+*.bchir2
+
+# Cjpm
+cjpm.lock
+.cache/
+
+# IDE
+.vscode/
+
+# Sample build
+sample/target/
+sample/.cache/
+sample/cjpm.lock
+sample/log.txt
+
+# Test
+test/target/
+test/.cache/
+test/cjpm.lock
