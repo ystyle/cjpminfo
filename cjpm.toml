@@ -3,12 +3,15 @@
 [package]
   cjc-version = "1.0.0"
   compile-option = ""
-  description = "nothing here"
+  description = "使用宏获取cjpm.toml信息"
   link-option = ""
   name = "cjpminfo"
   output-type = "static"
   override-compile-option = ""
   src-dir = ""
+  include = ["src"]
   target-dir = ""
   version = "1.0.0"
+  license = ["MulanPSL2"]
+  repository = ["https://github.com/ystyle/cjpminfo"]
   package-configuration = {}
