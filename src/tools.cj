@@ -125,6 +125,19 @@ func getCommandVersion(cmd: String): ?String {
     return None
 }
 
+func executeGitCommand(args: Array<String>): ?String {
+    try {
+        let (exitCode, stdout, _) = executeWithOutput("git", args)
+        if (exitCode == 0) {
+            let output = String.fromUtf8(stdout)
+            return output.trimAscii()
+        }
+    } catch (e: Exception) {
+        // 命令执行失败，返回 None
+    }
+    return None
+}
+
 public macro CjcVersion(inputs: Tokens): Tokens {
     let version = getCommandVersion("cjc") ?? inputs[0].value
     return Tokens() + Token(STRING_LITERAL, version)
@@ -133,4 +146,24 @@ public macro CjcVersion(inputs: Tokens): Tokens {
 public macro CjpmVersion(inputs: Tokens): Tokens {
     let version = getCommandVersion("cjpm") ?? inputs[0].value
     return Tokens() + Token(STRING_LITERAL, version)
+}
+
+public macro GitTag(inputs: Tokens): Tokens {
+    let tag = executeGitCommand(["describe", "--tags", "--abbrev=0"]) ?? inputs[0].value
+    return Tokens() + Token(STRING_LITERAL, tag)
+}
+
+public macro GitCommitId(inputs: Tokens): Tokens {
+    let commitId = executeGitCommand(["rev-parse", "HEAD"]) ?? inputs[0].value
+    return Tokens() + Token(STRING_LITERAL, commitId)
+}
+
+public macro GitCommitIdShort(inputs: Tokens): Tokens {
+    let commitId = executeGitCommand(["rev-parse", "--short", "HEAD"]) ?? inputs[0].value
+    return Tokens() + Token(STRING_LITERAL, commitId)
+}
+
+public macro GitBranch(inputs: Tokens): Tokens {
+    let branch = executeGitCommand(["rev-parse", "--abbrev-ref", "HEAD"]) ?? inputs[0].value
+    return Tokens() + Token(STRING_LITERAL, branch)
 }
