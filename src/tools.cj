@@ -4,6 +4,7 @@ import std.ast.*
 import std.fs.{File, OpenMode, Path}
 import std.env.getVariable
 import std.io.readToEnd
+import std.process.executeWithOutput
 
 class Module {
     Module(
@@ -100,4 +101,36 @@ public macro ModuleDesc(inputs:Tokens):Tokens {
     let m = getModule()
     let vsersion = m?.description ?? inputs[0].value
     return Tokens() + Token(STRING_LITERAL, vsersion)
+}
+
+func getCommandVersion(cmd: String): ?String {
+    try {
+        let (exitCode, stdout, _) = executeWithOutput(cmd, ["-v"])
+        if (exitCode == 0) {
+            let output = String.fromUtf8(stdout)
+            let lines = output.split("\n")
+            if (lines.size > 0) {
+                let firstLine = lines[0]
+                let colonIndex = firstLine.indexOf(":")
+                if (let Some(idx) <- colonIndex) {
+                    let version = firstLine[idx + 1..firstLine.size]
+                    return version.trimAscii()
+                }
+                return firstLine.trimAscii()
+            }
+        }
+    } catch (e: Exception) {
+        // 命令执行失败，返回 None
+    }
+    return None
+}
+
+public macro CjcVersion(inputs: Tokens): Tokens {
+    let version = getCommandVersion("cjc") ?? inputs[0].value
+    return Tokens() + Token(STRING_LITERAL, version)
+}
+
+public macro CjpmVersion(inputs: Tokens): Tokens {
+    let version = getCommandVersion("cjpm") ?? inputs[0].value
+    return Tokens() + Token(STRING_LITERAL, version)
 }
