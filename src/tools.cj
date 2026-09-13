@@ -120,7 +120,9 @@ func getCommandVersion(cmd: String): ?String {
             }
         }
     } catch (e: Exception) {
-        // 命令执行失败，返回 None
+        // 命令不可执行（未安装/不在 PATH）：退回宏入参字面量，返回值语义不变；
+        // 但必须留痕，否则编译产物里的版本号悄悄变成占位值而无人知晓
+        eprintln("[cjpminfo] run '" + cmd + " -v' failed, macro falls back to its literal argument: " + e.toString())
     }
     return None
 }
@@ -133,7 +135,8 @@ func executeGitCommand(args: Array<String>): ?String {
             return output.trimAscii()
         }
     } catch (e: Exception) {
-        // 命令执行失败，返回 None
+        // git 不可用：退回宏入参字面量，返回值语义不变；留痕以便区分"真没 tag"与"git 跑不起来"
+        eprintln("[cjpminfo] execute git command failed, macro falls back to its literal argument: " + e.toString())
     }
     return None
 }
