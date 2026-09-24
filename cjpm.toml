@@ -9,9 +9,10 @@
   output-type = "static"
   override-compile-option = ""
   src-dir = ""
-  include = ["src"]
+  include = ["/src"]
   target-dir = ""
-  version = "1.2.0"
+  version = "1.2.1"
   license = ["MulanPSL-2.0"]
+  authors = ["ystyle"]
   repository = ["https://github.com/ystyle/cjpminfo"]
   package-configuration = {}
